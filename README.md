@@ -413,4 +413,35 @@ a4df6f21af84: Extracting  32.31MB/90.36MB
 
 ```
 
+###  more container operations 
+
+```
+[root@ip-172-31-27-51 ~]# docker  run -itd  --name ashuc1  alpine 
+5b5dd5b4f115d636d507e76eb5bbf4ce518472d5c252a151fe60dac211544150
+[root@ip-172-31-27-51 ~]# docker  ps
+CONTAINER ID   IMAGE     COMMAND     CREATED         STATUS         PORTS     NAMES
+5b5dd5b4f115   alpine    "/bin/sh"   9 seconds ago   Up 8 seconds             ashuc1
+[root@ip-172-31-27-51 ~]# 
+[root@ip-172-31-27-51 ~]# docker  exec  -it  ashuc1   bash 
+OCI runtime exec failed: exec failed: unable to start container process: exec: "bash": executable file not found in $PATH: unknown
+[root@ip-172-31-27-51 ~]# docker  exec  -it  ashuc1  sh 
+/ # uname -r
+5.10.130-118.517.amzn2.x86_64
+/ # cat  /etc/os-release 
+NAME="Alpine Linux"
+ID=alpine
+VERSION_ID=3.16.2
+PRETTY_NAME="Alpine Linux v3.16"
+HOME_URL="https://alpinelinux.org/"
+BUG_REPORT_URL="https://gitlab.alpinelinux.org/alpine/aports/-/issues"
+/ # ls
+bin    dev    etc    home   lib    media  mnt    opt    proc   root   run    sbin   srv    sys    tmp    usr    var
+/ # mkdir hello 
+/ # exit
+[root@ip-172-31-27-51 ~]# 
+
+
+```
+
+
 
