@@ -230,6 +230,28 @@ eaa37050cc42   alpine    "ping fb.com"   15 minutes ago   Up 9 seconds          
 1d680d26985b   alpine    "ping fb.com"   17 minutes ago   Up 9 seconds              ashuc1
 ```
 
+### image building using dockerfile 
+
+<img src="img.png">
+
+### creating directory structure 
+
+```
+[ashu@ip-172-31-27-51 ~]$ pwd
+/home/ashu
+[ashu@ip-172-31-27-51 ~]$ mkdir  images 
+[ashu@ip-172-31-27-51 ~]$ ls
+images
+[ashu@ip-172-31-27-51 ~]$ mkdir  images/java   images/python  images/node 
+[ashu@ip-172-31-27-51 ~]$ ls
+images
+[ashu@ip-172-31-27-51 ~]$ ls  images/
+java  node  python
+[ashu@ip-172-31-27-51 ~]$ 
+
+
+```
+
 
 
 
