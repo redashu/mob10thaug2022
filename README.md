@@ -377,4 +377,40 @@ f7344f5ed018   alpine    "ping fb.com"       10 minutes ago       Up 10 minutes 
 
 ```
 
+### if container is not in running state we can remove it 
+
+```
+[root@ip-172-31-27-51 ~]# docker  rm   ashucg1 
+ashucg1
+```
+
+### dockerfile example 2 
+
+```
+FROM oraclelinux:8.4 
+# using base image 
+LABEL email=ashutoshh@linux.com 
+RUN yum install python3 -y 
+RUN mkdir /code 
+COPY hello.py  /code/
+CMD ["python3","/code/hello.py"]
+
+```
+
+### lets build it 
+
+```
+ashu@ip-172-31-27-51 images]$ cd python/
+[ashu@ip-172-31-27-51 python]$ ls 
+custom.dockerfile  Dockerfile  hello.py
+[ashu@ip-172-31-27-51 python]$ docker build -t ashupython:v2  -f  custom.dockerfile . 
+Sending build context to Docker daemon  4.096kB
+Step 1/6 : FROM oraclelinux:8.4
+8.4: Pulling from library/oraclelinux
+a4df6f21af84: Extracting  32.31MB/90.36MB
+
+
+
+```
+
 
