@@ -452,4 +452,61 @@ bin    dev    etc    home   lib    media  mnt    opt    proc   root   run    sbi
   4. In container 1st create a file called  helloc1.txt , file must contain some data 
   5. now copy helloc1.txt to  2nd container 
 ```
+### image push to docker hub 
 
+```
+[root@ip-172-31-27-51 ~]# docker images  |   grep -i ashu
+ashupython       v2        8c6c806c6b81   2 hours ago         441MB
+ashupython       v1        f687c61f100b   3 hours ago         922MB
+[root@ip-172-31-27-51 ~]# 
+[root@ip-172-31-27-51 ~]# 
+
+```
+
+### step 1 tagging 
+
+```
+[root@ip-172-31-27-51 ~]# docker   tag  ashupython:v2   docker.io/dockerashu/ashupython:v2  
+[root@ip-172-31-27-51 ~]# 
+
+
+
+```
+
+### step 2 login
+
+```
+[root@ip-172-31-27-51 ~]# docker login 
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: dockerashu
+Password: 
+WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[root@ip-172-31-27-51 ~]# 
+
+
+
+```
+
+
+### docker push 
+
+```
+[root@ip-172-31-27-51 ~]# docker  push docker.io/dockerashu/ashupython:v2 
+The push refers to repository [docker.io/dockerashu/ashupython]
+a91358372103: Pushed 
+eaa4acc27ac6: Pushed 
+c5562b9a6221: Pushed 
+2d3586eacb61: Mounted from feroz29/ferozpython 
+v
+```
+
+### for security reason 
+
+```
+[root@ip-172-31-27-51 ~]# docker logout 
+Removing login credentials for https://index.docker.io/v1/
+```
