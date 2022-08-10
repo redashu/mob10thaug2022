@@ -150,4 +150,86 @@ busybox      latest    7a80323521cc   11 days ago    1.24MB
 
 ```
 
+### checking list of running containers 
+
+```
+[root@ip-172-31-27-51 ~]# docker  ps
+CONTAINER ID   IMAGE     COMMAND             CREATED              STATUS              PORTS     NAMES
+1433175489b4   alpine    "ping fb.com"       33 seconds ago       Up 32 seconds                 afrozc1
+20087905d15f   alpine    "ping fb.com"       45 seconds ago       Up 44 seconds                 aishc1
+ad6aa2cceb90   alpine    "ping fb.com"       About a minute ago   Up About a minute             mayank
+662424e9a4bf   alpine    "ping fb.com"       About a minute ago   Up About a minute             dhruv1
+a98c04547978   alpine    "ping fb.com"       About a minute ago   Up About a minute             kanekac1
+b7241eabb4d5   alpine    "ping fb.com"       About a minute ago   Up About a minute             neha1
+c2eabcf50af7   alpine    "ping fb.com"       About a minute ago   Up About a minute             gaurikac1
+4b7187ab4c60   alpine    "ping fb.com"       About a minute ago   Up About a minute             sankalp
+5b8af0969164   alpine    "ping fb.com"       About a minute ago   Up About a minute             lakshayc1
+1aa7fe86e606   alpine    "ping google.com"   About a minute ago   Up About a minute             mohitc1
+7511c88014f0   alpine    "ping fb.com"       About a minute ago   Up About a minute             pra1
+c2ce443cc305   alpine    "ping fb.com"       About a minute ago   Up About a minute             aditi
+208a924752a2   alpine    "ping fb.com"  
+```
+
+### checking resources used by containers 
+
+```
+[root@ip-172-31-27-51 ~]# docker  stats  ashuc1 
+CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O   PIDS
+1d680d26985b   ashuc1    0.01%     344KiB / 31.35GiB   0.00%     61.5kB / 58.3kB   0B / 0B     1
+^C
+[root@ip-172-31
+```
+
+### stopping a running container 
+
+```
+[root@ip-172-31-27-51 ~]# docker  stop  ashuc1
+ashuc1
+[root@ip-172-31-27-51 ~]# 
+
+
+```
+
+### checking all the containers 
+
+```
+[root@ip-172-31-27-51 ~]# docker  ps  -a
+CONTAINER ID   IMAGE     COMMAND             CREATED          STATUS                            PORTS     NAMES
+1368bfc8f565   alpine    "ping fb.com"       5 minutes ago    Up 5 minutes                                tanishqCon
+869316c50642   alpine    "fb.com"            9 minutes ago    Created                                     tanishqContainer
+4d41ecf12ca9   alpine    "ping fb.com"       11 minutes ago   Exited (137) About a minute ago             shubhamc1
+62ecf874b736   alpine    "ping fb.com"       11 minutes ago   Exited (137) 2 minutes ago                  yashc2
+67540c3396cb   alpine    "ping fb.com"       11 minutes ago   Exited (137) About a minute ago             deepakc1
+7ade5ece0625   alpine    "ping fb.com"       12 minutes ago   Exited (137) 2 minutes ago                  divyac
+501834d97d24   python    "ping fb.com"       12 minutes ago   Created                                     yashc1
+1433175489b4   alpine    "ping fb.com"       12 minutes ago   Exited (137) About a minute ago             afrozc1
+20087905d15f   alpine    "ping fb.com"       13 minutes ago   Up 13 minutes                               aishc1
+ad6aa2cceb90   alpine    "ping fb.com"       13 minutes ago   Up 13 minutes                               mayank
+662424e9a4bf   alpine    "ping fb.com"  
+```
+
+### starting a stopped container 
+
+```
+[root@ip-172-31-27-51 ~]# docker  start  ashuc1
+ashuc1
+[root@ip-172-31-27-51 ~]# 
+[root@ip-172-31-27-51 ~]# 
+[root@ip-172-31-27-51 ~]# 
+[root@ip-172-31-27-51 ~]# docker  ps
+CONTAINER ID   IMAGE     COMMAND         CREATED          STATUS          PORTS     NAMES
+4d41ecf12ca9   alpine    "ping fb.com"   12 minutes ago   Up 7 seconds              shubhamc1
+7ade5ece0625   alpine    "ping fb.com"   13 minutes ago   Up 10 seconds             divyac
+20087905d15f   alpine    "ping fb.com"   14 minutes ago   Up 14 minutes             aishc1
+ad6aa2cceb90   alpine    "ping fb.com"   14 minutes ago   Up 14 minutes             mayank
+662424e9a4bf   alpine    "ping fb.com"   14 minutes ago   Up 5 seconds              dhruv1
+4b7187ab4c60   alpine    "ping fb.com"   15 minutes ago   Up 3 seconds              sankalp
+5b8af0969164   alpine    "ping fb.com"   15 minutes ago   Up 6 seconds              lakshayc1
+403f4e8657de   alpine    "ping fb.com"   15 minutes ago   Up 7 seconds              ferozc1
+eaa37050cc42   alpine    "ping fb.com"   15 minutes ago   Up 9 seconds              roni
+1d680d26985b   alpine    "ping fb.com"   17 minutes ago   Up 9 seconds              ashuc1
+```
+
+
+
 
