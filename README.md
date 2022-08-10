@@ -81,5 +81,73 @@ Run "sudo yum update" to apply all updates.
 [ashu@ip-172-31-27-51 ~]$ 
 ```
 
+### COnnecting to docker server / host from docker client 
+
+```
+[ashu@ip-172-31-27-51 ~]$ docker  version 
+Client:
+ Version:           20.10.17
+ API version:       1.41
+ Go version:        go1.18.3
+ Git commit:        100c701
+ Built:             Thu Jun 16 20:08:47 2022
+ OS/Arch:           linux/amd64
+ Context:           default
+ Experimental:      true
+
+Server:
+ Engine:
+  Version:          20.10.17
+  API version:      1.41 (minimum version 1.12)
+  Go version:       go1.18.3
+  Git commit:       a89b842
+  Built:            Thu Jun 16 20:09:24 2022
+  OS/Arch:          linux/amd64
+  Experimental:     false
+```
+
+
+### checking images list 
+
+```
+[ashu@ip-172-31-27-51 ~]$ docker  images
+REPOSITORY   TAG       IMAGE ID   CREATED   SIZE
+[ashu@ip-172-31-27-51 ~]$ 
+
+```
+
+### pulling images from docker hub to docker server 
+
+```
+[ashu@ip-172-31-27-51 ~]$ docker  images
+REPOSITORY   TAG       IMAGE ID   CREATED   SIZE
+[ashu@ip-172-31-27-51 ~]$ docker  pull mysql 
+Using default tag: latest
+latest: Pulling from library/mysql
+Digest: sha256:ce2ae3bd3e9f001435c4671cf073d1d5ae55d138b16927268474fc54ba09ed79
+Status: Image is up to date for mysql:latest
+docker.io/library/mysql:latest
+[ashu@ip-172-31-27-51 ~]$ docker  images
+REPOSITORY   TAG       IMAGE ID       CREATED      SIZE
+mysql        latest    7b94cda7ffc7   6 days ago   446MB
+[ashu@ip-172-31-27-51 ~]$ 
+
+```
+
+### creating container 
+
+```
+[ashu@ip-172-31-27-51 ~]$ docker  images
+REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
+alpine       latest    9c6f07244728   14 hours ago   5.54MB
+openjdk      latest    b32de7d15480   6 days ago     464MB
+mysql        latest    7b94cda7ffc7   6 days ago     446MB
+python       latest    ae9660359c2a   6 days ago     922MB
+busybox      latest    7a80323521cc   11 days ago    1.24MB
+[ashu@ip-172-31-27-51 ~]$ docker  run  --name  ashuc1  -d  alpine  ping fb.com  
+1d680d26985bd63cb198935d628b6d47fd905e076fde498d02c28dd16ada2790
+[ashu@ip-172-31-27-51 ~]$ 
+
+```
 
 
