@@ -355,5 +355,26 @@ ______________________
   5. store that output in a file <yourname>task1.txt in /tmp/<yourname>task1.txt in docker host machine 
 ```
 
+### solution of task 1 
+
+```
+[root@ip-172-31-27-51 ~]# docker  run -d  --name ashucg1  busybox  uname -r 
+16700921902ba8549bdb741aa9d01ca141cd65fb1d2c86013fbae41aaf31d83a
+[root@ip-172-31-27-51 ~]# docker  ps
+CONTAINER ID   IMAGE     COMMAND             CREATED              STATUS              PORTS     NAMES
+9c03545d0be4   busybox   "ping fb.com"       About a minute ago   Up About a minute             dhruvcg3
+f20c019aed6b   busybox   "ping fb.com"       3 minutes ago        Up 3 minutes                  shubhamcg2
+573b6fc74c58   busybox   "ping fd.com"       6 minutes ago        Up 6 minutes                  deepakcg1
+b911f087a17c   busybox   "ping fb.com"       7 minutes ago        Up 7 minutes                  prachicg1
+de1fa02b1173   busybox   "ping fb.com"       8 minutes ago        Up 8 minutes                  divyat1
+59f871c654ce   busybox   "ping fb.com"       9 minutes ago        Up 9 minutes                  yashcg1
+2a418248d5c3   busybox   "ping google.com"   9 minutes ago        Up 9 minutes                  javedcg1
+f7344f5ed018   alpine    "ping fb.com"       10 minutes ago       Up 10 minutes                 sujathacg1
+[root@ip-172-31-27-51 ~]# docker  logs  ashucg1  
+5.10.130-118.517.amzn2.x86_64
+[root@ip-172-31-27-51 ~]# docker  logs  ashucg1   >/tmp/ashutask1.txt  
+[root@ip-172-31-27-51 ~]# 
+
+```
 
 
