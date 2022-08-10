@@ -345,7 +345,15 @@ Welcome to Containers ..!!
 ______________________
 ```
 
+### task 1 
 
+```
+1. Create one container named with  <yourname>cg1 also use "-d" option to put container in background 
+  2. choose busybox as docker image
+  3. choose  parent process of container as  "uname -r" 
+  4. now check the output of process which you given in  your container 
+  5. store that output in a file <yourname>task1.txt in /tmp/<yourname>task1.txt in docker host machine 
+```
 
 
 
