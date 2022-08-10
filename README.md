@@ -317,6 +317,34 @@ Successfully built f687c61f100b
 Successfully tagged ashupython:v1
 ```
 
+### creating container from image 
+```
+[ashu@ip-172-31-27-51 images]$ docker  run --name ashupyc1  -itd ashupython:v1  
+c37a892cfddc9964cc415e8377f1d28f148df95713866081b3a29743e284c8a4
+[ashu@ip-172-31-27-51 images]$ docker  ps
+CONTAINER ID   IMAGE           COMMAND                  CREATED                  STATUS                  PORTS     NAMES
+0a62e0520182   dimppython:v1   "python /code/hello.…"   Less than a second ago   Up Less than a second             dimpc1
+c37a892cfddc   ashupython:v1   "python /code/hello.…"   4 seconds ago            Up 3 seconds                      ashupyc1
+```
+
+### checking output of container program 
+
+```
+[ashu@ip-172-31-27-51 images]$ docker logs  ashupyc1 
+Hello all , welcome to python..!!
+Welcome to Mobi..
+Welcome to Containers ..!!
+______________________
+Hello all , welcome to python..!!
+Welcome to Mobi..
+Welcome to Containers ..!!
+______________________
+Hello all , welcome to python..!!
+Welcome to Mobi..
+Welcome to Containers ..!!
+______________________
+```
+
 
 
 
