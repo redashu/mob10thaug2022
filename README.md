@@ -251,6 +251,72 @@ java  node  python
 
 
 ```
+## creating custom images 
+
+### python based image 
+
+### code 
+
+```
+import time
+
+while True:
+    print("Hello all , welcome to python..!!")
+    time.sleep(3)
+    print("Welcome to Mobi..")
+    time.sleep(2)
+    print("Welcome to Containers ..!!")
+    print("______________________")
+    time.sleep(3)
+```
+
+### dockerfile 
+
+```
+FROM python
+#  docker engine will pull image from Docker hub if not present 
+LABEL name=ashutoshh
+LABEL email=ashutoshh@linux.com 
+# optional field but you can share image Designer info 
+RUN mkdir /code 
+# is to give shell in container during image build time 
+COPY hello.py /code/ 
+# to copy data from docker clien to docker server during image build time
+CMD ["python","/code/hello.py"]
+#  to set default process for container 
+```
+
+###  buidling docker image 
+
+```
+[ashu@ip-172-31-27-51 images]$ ls
+java  node  python
+[ashu@ip-172-31-27-51 images]$ docker build  -t  ashupython:v1   python/
+Sending build context to Docker daemon  3.072kB
+Step 1/6 : FROM python
+ ---> ae9660359c2a
+Step 2/6 : LABEL name=ashutoshh
+ ---> Running in 002b58eb0b68
+Removing intermediate container 002b58eb0b68
+ ---> 9a6b23975d15
+Step 3/6 : LABEL email=ashutoshh@linux.com
+ ---> Running in 1bf196580221
+Removing intermediate container 1bf196580221
+ ---> 8023dc95dd6e
+Step 4/6 : RUN mkdir /code
+ ---> Running in 027e7fe4a790
+Removing intermediate container 027e7fe4a790
+ ---> 094b6f33faad
+Step 5/6 : COPY hello.py /code/
+ ---> 0bddd7cab466
+Step 6/6 : CMD ["python","/code/hello.py"]
+ ---> Running in 5c134ba08176
+Removing intermediate container 5c134ba08176
+ ---> f687c61f100b
+Successfully built f687c61f100b
+Successfully tagged ashupython:v1
+```
+
 
 
 
