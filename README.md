@@ -244,3 +244,36 @@ dev    home   media  opt    root   sbin   sys    usr
 ```
 git clone https://github.com/lmammino/sample-web-project
 ```
+
+### Dockerfile 
+
+```
+FROM oraclelinux:8.4 
+LABEL name="ashutoshh"
+LABEL email="ashutoshh@linux.com"
+RUN yum install httpd -y 
+ADD sample-web-project  /var/www/html/
+# COpy and add both are same while add can take input
+# from URL also 
+CMD ["httpd","-D","FOREGROUND"]
+# ENTRYPOINT 
+
+```
+
+### docker compsoe file 
+
+```
+version: '3.8'
+services: # components of your app/project
+  ashuapp2: 
+    image: ashuhttpd:v1  # name of image to build
+    build: . # path of dockerfile
+    container_name: ashuwebc1 
+    ports: # port forwarding 
+      - 1234:80 
+  ashuapp1: # name of app
+    image: alpine 
+    container_name: ashuc001 
+    command: ping google.com # to choose default process
+   
+```
