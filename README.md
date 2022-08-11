@@ -145,3 +145,97 @@ NETWORK ID     NAME      DRIVER    SCOPE
     8. now remove container default bridge NIC card 
    9. meaning container finally must have only ip address from custom bridge you created above not from default bridge 
 ```
+
+## DOcker compose 
+
+
+### Example 1 
+
+
+```
+version: '3.8'
+services: # components of your app/project
+  ashuapp1: # name of app
+    image: alpine 
+    container_name: ashuc001 
+    command: ping google.com # to choose default process
+   
+```
+
+### lets run compose file 
+
+```
+[ashu@ip-172-31-27-51 images]$ ls
+ashu-compose  java  node  python  webapps
+[ashu@ip-172-31-27-51 images]$ cd  ashu-compose/
+[ashu@ip-172-31-27-51 ashu-compose]$ ls
+docker-compose.yaml
+[ashu@ip-172-31-27-51 ashu-compose]$ docker-compose  up -d  
+[+] Running 2/2
+ ⠿ ashuapp1 Pulled                                                                      1.2s
+   ⠿ 213ec9aee27d Pull complete                                                         0.1s
+[+] Running 2/2
+ ⠿ Network ashu-compose_default  Created                                                0.1s
+ ⠿ Container ashuc001            Started                                                0.7s
+[ashu@ip-172-31-27-51 ashu-compose]$ 
+```
+
+### more compose commands 
+
+```
+[ashu@ip-172-31-27-51 ashu-compose]$ docker-compose  ps
+NAME                COMMAND             SERVICE             STATUS              PORTS
+ashuc001            "ping google.com"   ashuapp1            running             
+[ashu@ip-172-31-27-51 ashu-compose]$ docker-compose  images
+Container           Repository          Tag                 Image Id            Size
+ashuc001            alpine              latest              9c6f07244728        5.54MB
+[ashu@ip-172-31-27-51 ashu-compose]$ 
+
+```
+
+###
+
+```
+[ashu@ip-172-31-27-51 ashu-compose]$ docker-compose  stop
+[+] Running 1/1
+ ⠿ Container ashuc001  Stopped                                                         10.2s
+[ashu@ip-172-31-27-51 ashu-compose]$ docker-compose  ps
+NAME                COMMAND             SERVICE             STATUS              PORTS
+ashuc001            "ping google.com"   ashuapp1            exited (137)        
+[ashu@ip-172-31-27-51 ashu-compose]$ docker-compose  start
+[+] Running 1/1
+ ⠿ Container ashuc001  Started                                                          0.6s
+[ashu@ip-172-31-27-51 ashu-compose]$ docker-compose  ps
+NAME                COMMAND             SERVICE             STATUS              PORTS
+ashuc001            "ping google.com"   ashuapp1            running      
+```
+
+###
+
+```
+[ashu@ip-172-31-27-51 ashu-compose]$ docker-compose  ps
+NAME                COMMAND             SERVICE             STATUS              PORTS
+ashuc001            "ping google.com"   ashuapp1            running             
+[ashu@ip-172-31-27-51 ashu-compose]$ 
+[ashu@ip-172-31-27-51 ashu-compose]$ 
+[ashu@ip-172-31-27-51 ashu-compose]$ 
+[ashu@ip-172-31-27-51 ashu-compose]$ docker-compose exec  ashuapp1  sh
+/ # 
+/ # 
+/ # 
+/ # ls
+bin    etc    lib    mnt    proc   run    srv    tmp    var
+dev    home   media  opt    root   sbin   sys    usr
+/ # exit
+```
+
+### to clean up 
+
+```
+[ashu@ip-172-31-27-51 ashu-compose]$ docker-compose down 
+[+] Running 2/2
+ ⠿ Container ashuc001            Removed                                               10.3s
+ ⠿ Network ashu-compose_default  Removed                                                0.1s
+[ashu@ip-172-31-27-51 ashu-compose]$ 
+```
+
