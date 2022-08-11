@@ -98,3 +98,11 @@ NETWORK ID     NAME      DRIVER    SCOPE
    78  docker  inspect  sankalpwebappc1  --format='{{.NetworkSettings.IPAddress}}'
 ```
 
+### task 3 
+
+```
+  1.  create a container of <yourname>cc11 
+      2. choose oraclelinux:8.4  as docker image 
+      3. any process of container
+      4. container must not be able to communitcate to other containers as well not to internet
+```
