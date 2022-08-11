@@ -277,3 +277,20 @@ services: # components of your app/project
     command: ping google.com # to choose default process
    
 ```
+
+### task 5 
+
+```
+ 1. Create a container named  <yourname>cimg 
+  2. choose oraclelinux:8.4 as docker image
+  3. Install vim and httpd software inside a running container 
+  4. Now create a docker image from this running container 
+  5. make sure this docker  image name must be  <yourname>cimg:v007  
+  6. check it by docker images
+  7. create a container from this imaeg  by whatever name 
+  8. choose any process so that container can keep running 
+  9. after container creation change its restart policy to "always"
+  10. check restart policy that it got updated 
+  11. if all setup then push this image to dockerhub on your personal account 
+```
+
