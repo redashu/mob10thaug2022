@@ -59,3 +59,42 @@ Successfully tagged ashuwebapp:v1
 [ashu@ip-172-31-27-51 webapps]$ 
 ```
 
+### creating container 
+
+```
+ docker  run -d  --name ashuwapp1   ashuwebapp:v1 
+ 
+```
+
+## networking in docker 
+
+```
+[ashu@ip-172-31-27-51 webapps]$ docker  network  ls
+NETWORK ID     NAME      DRIVER    SCOPE
+68f6204f6995   bridge    bridge    local
+886517202b25   host      host      local
+8d1dfc2bb8a4   none      null      local
+[ashu@ip-172-31-27-51 webapps]$ docker  network  inspect  bridge
+[
+    {
+        "Name": "bridge",
+        "Id": "68f6204f69959d970a5bd876a97865069e906c1483b27352a9dcc81407774d4e",
+        "Created": "2022-08-11T03:42:31.421674096Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+```
+
+### checking container networking 
+
+```
+ 73  docker  inspect  ashuwapp1  --format='{{.Id}}'
+   74  docker  inspect  ashuwapp1  --format='{{.State.Status}}'
+   75  docker  inspect  ashuwapp1  --format='{{.Id}}'
+   76  docker  inspect  ashuwapp1  --format='{{.NetworkSettings.IPAddress}}'
+   77  docker  inspect  sankalpwebap  --format='{{.NetworkSettings.IPAddress}}'
+   78  docker  inspect  sankalpwebappc1  --format='{{.NetworkSettings.IPAddress}}'
+```
+
