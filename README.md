@@ -106,3 +106,9 @@ NETWORK ID     NAME      DRIVER    SCOPE
       3. any process of container
       4. container must not be able to communitcate to other containers as well not to internet
 ```
+
+### creating container with port forwarding 
+
+```
+ docker run -d  --name ashuwebc1  -p  1234:80  ashuwebapp:v1 
+```
