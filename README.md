@@ -131,3 +131,17 @@ NETWORK ID     NAME      DRIVER    SCOPE
 ```
  docker  run -itd --name ashuc4  --network ashubr2   --ip 193.168.2.100  alpine 
 ```
+
+### task 4 
+
+```
+ 1.  create a container of <yourname>cc22
+    2. choose oraclelinux:8.4  as docker image 
+    3. any process of container os that it can keep running 
+    4. this container must be part of default bridge 
+    5. same container must be part of  <yourname>brx1  # Note bridge is not present then do create it 
+    6. now  check what are two different ip address of containers
+    7. write both Ip's somewhere in your notepad for verification purpose 
+    8. now remove container default bridge NIC card 
+   9. meaning container finally must have only ip address from custom bridge you created above not from default bridge 
+```
