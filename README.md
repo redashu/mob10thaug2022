@@ -112,3 +112,22 @@ NETWORK ID     NAME      DRIVER    SCOPE
 ```
  docker run -d  --name ashuwebc1  -p  1234:80  ashuwebapp:v1 
 ```
+
+### creating custom bridge 
+
+```
+ docker  network  inspect  ashubr1 
+  docker  network  create   ashubr2   --subnet  193.168.2.0/24  
+```
+
+### creating container in above created bridge
+
+```
+ docker  run -itd --name ashuc2  --network ashubr1  alpine
+```
+
+### creating container with static ip address
+
+```
+ docker  run -itd --name ashuc4  --network ashubr2   --ip 193.168.2.100  alpine 
+```
