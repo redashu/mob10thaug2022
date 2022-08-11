@@ -239,3 +239,8 @@ dev    home   media  opt    root   sbin   sys    usr
 [ashu@ip-172-31-27-51 ashu-compose]$ 
 ```
 
+### Example 2 
+
+```
+git clone https://github.com/lmammino/sample-web-project
+```
