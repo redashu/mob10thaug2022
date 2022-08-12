@@ -39,3 +39,143 @@ ashu-compose  customer1  java  node  python  webapps
   212  git clone https://github.com/schoolofdevops/html-sample-app.git
   213  git clone https://github.com/yenchiah/project-website-template.git
 ```
+
+### .dockeringore 
+
+```
+html-sample-app/.git
+html-sample-app/*.txt
+project-html-website/.git
+project-html-website/LICENSE
+project-html-website/README.md
+project-website-template/.git
+project-website-template/.gitignore
+project-website-template/LICENSE
+project-website-template/README.md
+```
+
+#### dockerfile 
+
+```
+FROM oraclelinux:8.4
+LABEL name="ashutoshh"
+LABEL email="ashutoshh@linux.com"
+ENV deploy=sampleapp 
+# to define env in docker image but optional these days 
+RUN yum install httpd -y && mkdir -p /apps/{app1,app2,app3}
+COPY html-sample-app /apps/app1/ 
+COPY project-html-website  /apps/app2/
+COPY project-website-template /apps/app3/
+COPY deploy.sh /apps/
+WORKDIR /apps
+RUN chmod +x  deploy.sh 
+# to change directory for this image during build time 
+ENTRYPOINT ["./deploy.sh"]
+
+
+```
+
+### shell script
+
+```
+#!/bin/bash
+if  [  "$deploy"  ==  "webapp1"   ]
+then
+    cp -rf /apps/app1/*  /var/www/html/
+    httpd -DFOREGROUND 
+
+elif  [  "$deploy"  ==  "webapp2"   ]
+then
+    cp -rf /apps/app2/*  /var/www/html/
+    httpd -DFOREGROUND 
+
+elif  [  "$deploy"  ==  "webapp3"   ]
+then
+    cp -rf /apps/app3/*  /var/www/html/
+    httpd -DFOREGROUND 
+else 
+    echo "Wrong variable name " >/var/www/html/index.html
+    httpd -DFOREGROUND
+fi 
+```
+
+### compose file 
+
+```
+version: '3.8'
+networks: # creating bridge 
+  ashubr111: # name of bridge 
+services:
+  ashuwebapp1:
+    image: docker.io/dockerashu/ashuwebday3:v1 
+    build: . 
+    container_name: ashuwebapp1  # name of container 
+    restart: always # restart policy of container 
+    ports:
+    - "1234:80" # port forwarding 
+    networks: # bridge to use 
+      - ashubr111 # name of bridge 
+
+```
+
+### lets run it 
+
+```
+[ashu@ip-172-31-27-51 ashucustomer1]$ docker-compose up -d  --build 
+[+] Building 0.9s (13/13) FINISHED                                                                                            
+ => [internal] load build definition from Dockerfile                                                                     0.0s
+ => => transferring dockerfile: 514B                                                                                     0.0s
+ => [internal] load .dockerignore                                                                                        0.0s
+ => => transferring context: 304B                                                                                        0.0s
+ => [internal] load metadata for docker.io/library/oraclelinux:8.4                                                       0.1s
+ => CACHED [1/8] FROM docker.io/library/oraclelinux:8.4@sha256:b81d5b0638bb67030b207d28586d0e714a811cc612396dbe3410db40  0.0s
+ => [internal] load build context                                                                                        0.1s
+ => => transferring context: 4.57MB                                                                                      0.1s
+ => CACHED [2/8] RUN yum install httpd -y && mkdir -p /apps/{app1,app2,app3}                                             0.0s
+ => CACHED [3/8] COPY html-sample-app /apps/app1/                                                                        0.0s
+ => CACHED [4/8] COPY project-html-website  /apps/app2/                                                                  0.0s
+ => CACHED [5/8] COPY project-website-template /apps/app3/                                                               0.0s
+ => [6/8] COPY deploy.sh /apps/                                                                                          0.1s
+ => [7/8] WORKDIR /apps                                                                                                  0.0s
+ => [8/8] RUN chmod +x  deploy.sh                                                                                        0.5s
+ => exporting to image                                                                                                   0.0s
+ => => exporting layers                                                                                                  0.0s
+ => => writing image sha256:601d5bec2ab78b338353d50c8b40b2e954d550e487829e018bcc66178ff7f71d                             0.0s
+ => => naming to docker.io/dockerashu/ashuwebday3:v1                                                                     0.0s
+[+] Running 2/2
+ ⠿ Network ashucustomer1_ashubr111  Created                                                                              0.1s
+ ⠿ Container ashuwebapp1            Started
+```
+
+### 
+
+```
+[ashu@ip-172-31-27-51 ashucustomer1]$ docker-compose ps
+NAME                COMMAND             SERVICE             STATUS              PORTS
+ashuwebapp1         "./deploy.sh"       ashuwebapp1         running             0.0.0.0:1234->80/tcp, :::1234->80/tcp
+[ashu@ip-172-31-27-51 ashucustomer1]$ 
+```
+
+### pushing image to docker hub 
+
+```
+ashu@ip-172-31-27-51 ashucustomer1]$ docker login -u dockerashu
+Password: 
+WARNING! Your password will be stored unencrypted in /home/ashu/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[ashu@ip-172-31-27-51 ashucustomer1]$ docker push  dockerashu/ashuwebday3:v1  
+The push refers to repository [docker.io/dockerashu/ashuwebday3]
+cee506c83821: Pushed 
+5f70bf18a086: Pushed 
+2eb3f5ba4018: Pushed 
+537e4e99c1d9: Pushed 
+0c9d26b91f7e: Pushed 
+1c75741d450f: Pushed 
+4dd16b911939: Pushed 
+2d3586eacb61: Mounted from dockerashu/ashutask5 
+v1: digest: sha256:d331f480e0be48308b43163dcb2387
+```
+
