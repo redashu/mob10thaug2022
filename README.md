@@ -320,3 +320,112 @@ ashuvol1
 [ashu@ip-172-31-27-51 ashucustomer1]$ 
 ```
 
+### MYSQL compose 
+
+```
+version:  "3.8"
+networks: # creating network bridge 
+  ashubr1111: # name of network bridge 
+volumes: # creating volumes 
+  ashudbvol1: # name of volume 
+services:
+  ashudb1: 
+    image: mysql
+    container_name: ashudbc1 
+    restart: always 
+    environment: # setting env values 
+      MYSQL_ROOT_PASSWORD: "Mobi@098#"
+    volumes: # using volume 
+    - "ashudbvol1:/var/lib/mysql/"
+    networks: # using network 
+    - ashubr1111
+```
+
+### deploy it 
+
+```
+[ashu@ip-172-31-27-51 images]$ cd ashu-compose/
+[ashu@ip-172-31-27-51 ashu-compose]$ docker-compose -f mysql.yaml up -d
+[+] Running 12/12
+ ⠿ ashudb1 Pulled                                                                      6.2s
+   ⠿ 32c1bf40aba1 Already exists                                                       0.0s
+   ⠿ 3ac22f3a638d Pull complete                                                        0.4s
+   ⠿ b1e7273ed05e Pull complete                                                        0.5s
+   ⠿ 20be45a0c6ab Pull complete                                                        0.8s
+   ⠿ 410a229693ff Pull complete                                                        0.8s
+   ⠿ 1ce71e3a9b88 Pull complete                                                        0.9s
+   ⠿ c93c823af05b Pull complete                                                        2.4s
+   ⠿ c6752c4d09c7 Pull complete                                                        2.4s
+   ⠿ d7f2cfe3efcb Pull complete                                                        4.6s
+   ⠿ 916f32cb0394 Pull complete                                                        4.6s
+   ⠿ 0d62a5f9a14f Pull complete                                                        4.7s
+[+] Running 3/3
+ ⠿ Network ashu-compose_ashubr1111   Created                                           0.0s
+ ⠿ Volume "ashu-compose_ashudbvol1"  Created                                           0.0s
+ ⠿ Container ashudbc1                Started                                           1.0s
+[ashu@ip-172-31-27-51 ashu-compose]$ 
+
+```
+
+### db loging 
+
+```
+[ashu@ip-172-31-27-51 ashu-compose]$ docker-compose -f mysql.yaml ps
+NAME                COMMAND                  SERVICE             STATUS              PORTS
+ashudbc1            "docker-entrypoint.s…"   ashudb1             running             3306/tcp, 33060/tcp
+[ashu@ip-172-31-27-51 ashu-compose]$ docker-compose -f mysql.yaml  exec  ashudb1  bash 
+bash-4.4# 
+bash-4.4# 
+bash-4.4# mysql -u root -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.30 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> 
+```
+
+### compsoe with mysql and webapp client 
+
+```
+version:  "3.8"
+networks: # creating network bridge 
+  ashubr1111: # name of network bridge 
+volumes: # creating volumes 
+  ashudbvol1: # name of volume 
+services:
+  ashuwebapp: 
+    image: adminer 
+    container_name: ashuwebc1 
+    restart: always 
+    networks:
+    - ashubr1111
+    ports:
+    - "1234:8080"
+    depends_on: # it will wait for given service to be in ready state  
+    - ashudb1 # service name of db 
+  ashudb1: 
+    image: mysql
+    container_name: ashudbc1 
+    restart: always 
+    environment: # setting env values 
+      MYSQL_ROOT_PASSWORD: "Mobi@098#"
+    volumes: # using volume 
+    - "ashudbvol1:/var/lib/mysql/"
+    networks: # using network 
+    - ashubr1111
+```
+
+### 
+
+```
+
+```
