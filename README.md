@@ -200,4 +200,53 @@ services:
 
 ```
 
+### Docker image pusing to ECR 
+
+#### tagging 
+
+```
+docker  tag  37ea3552b449   724915917086.dkr.ecr.us-west-2.amazonaws.com/mobiwebapp:ashuappv1
+```
+
+### login 
+
+```
+[ashu@ip-172-31-27-51 ashucustomer1]$ docker login  724915917086.dkr.ecr.us-west-2.amazonaws.com  
+Username: AWS
+Password: 
+WARNING! Your password will be stored unencrypted in /home/ashu/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+
+```
+
+### pushing
+
+```
+
+
+[ashu@ip-172-31-27-51 ashucustomer1]$ docker push  724915917086.dkr.ecr.us-west-2.amazonaws.com/mobiwebapp:ashuappv1  
+The push refers to repository [724915917086.dkr.ecr.us-west-2.amazonaws.com/mobiwebapp]
+597bdbec50a4: Pushed 
+5f70bf18a086: Pushed 
+a89826938cf4: Pushed 
+74f962d0a246: Pushed 
+bb8569cc10f2: Pushed 
+235e47f5f599: Pushed 
+a31901591acf: Pushed 
+2d3586eacb61: Pushed 
+ashuappv1: digest: sha256:10559c992e2c2d1761f50a7704ae0b57c53e15b0170d9bd47aa6909da3c1e6ce size: 1994
+[ashu@ip-172-31-27-51 ashucustomer1]$ 
+```
+
+### logout 
+
+```
+[ashu@ip-172-31-27-51 ashucustomer1]$ docker logout  724915917086.dkr.ecr.us-west-2.amazonaws.com  
+Removing login credentials for 724915917086.dkr.ecr.us-west-2.amazonaws.com
+```
+
+
 
