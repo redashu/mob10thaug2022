@@ -248,5 +248,75 @@ ashuappv1: digest: sha256:10559c992e2c2d1761f50a7704ae0b57c53e15b0170d9bd47aa690
 Removing login credentials for 724915917086.dkr.ecr.us-west-2.amazonaws.com
 ```
 
+## Storage in docker 
 
+### container are ephemral by default 
+
+### creating container with some data
+
+
+```
+[ashu@ip-172-31-27-51 ashucustomer1]$ docker  run -dit --name ashut1  --restart always alpine 
+580cb1bbad60e79450f17d8fe642698623609c23d86afc8f9da93196a6f4c829
+[ashu@ip-172-31-27-51 ashucustomer1]$ docker  exec -it ashut1  sh 
+/ # mkdir hello
+/ # echo hello world  >/hello/hi.txt 
+/ # 
+/ # ls  hello/
+hi.txt
+/ # exit
+```
+
+### stopping container is not causing data loss
+
+```
+[ashu@ip-172-31-27-51 ashucustomer1]$ docker  kill ashut1 
+ashut1
+[ashu@ip-172-31-27-51 ashucustomer1]$ docker start  ashut1 
+ashut1
+[ashu@ip-172-31-27-51 ashucustomer1]$ docker  exec ashut1  ls  /hello 
+hi.txt
+[ashu@ip-172-31-27-51 ashucustomer1]$ 
+
+```
+
+### creating volume 
+
+```
+[ashu@ip-172-31-27-51 ashucustomer1]$ docker  volume  ls
+DRIVER    VOLUME NAME
+[ashu@ip-172-31-27-51 ashucustomer1]$ docker  volume  create  ashuvol1 
+ashuvol1
+[ashu@ip-172-31-27-51 ashucustomer1]$ docker  volume  inspect  ashuvol1 
+[
+    {
+        "CreatedAt": "2022-08-12T09:25:44Z",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/lib/docker/volumes/ashuvol1/_data",
+        "Name": "ashuvol1",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+[ashu@ip-172-31-27-51 ashucustomer1]$ 
+```
+
+### more things 
+
+```
+[ashu@ip-172-31-27-51 ashucustomer1]$ docker  run -tid  --name ashux2 -v ashuvol1:/opt/d1:ro  ubuntu 
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+d19f32bd9e41: Already exists 
+Digest: sha256:34fea4f31bf187bc915536831fd0afc9d214755bf700b5cdb1336c82516d154e
+Status: Downloaded newer image for ubuntu:latest
+b6f9c52c6dc8fc3dbc3d93e5a96c360075f6ef354fba1839f1bfb5e32fdb9499
+[ashu@ip-172-31-27-51 ashucustomer1]$ docker  rm  ashux2  ashut1007 -f
+ashux2
+ashut1007
+[ashu@ip-172-31-27-51 ashucustomer1]$ docker volume rm ashuvol1 
+ashuvol1
+[ashu@ip-172-31-27-51 ashucustomer1]$ 
+```
 
