@@ -179,3 +179,25 @@ cee506c83821: Pushed
 v1: digest: sha256:d331f480e0be48308b43163dcb2387
 ```
 
+### COmpsoe with env 
+
+```
+version: '3.8'
+networks: # creating bridge 
+  ashubr111: # name of bridge 
+services:
+  ashuwebapp1:
+    image: docker.io/dockerashu/ashuwebday3:v1 
+    build: . 
+    container_name: ashuwebapp1  # name of container 
+    restart: always # restart policy of container 
+    ports:
+    - "1234:80" # port forwarding 
+    networks: # bridge to use 
+      - ashubr111 # name of bridge 
+    environment: # passing env to docker container 
+      deploy: webapp3 
+
+```
+
+
