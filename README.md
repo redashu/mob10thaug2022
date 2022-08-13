@@ -144,3 +144,73 @@ sharathpod1   0/1     ContainerCreating   0          1s
 [ashu@ip-172-31-27-51 k8syamls]$ 
 
 ```
+
+### deleting pod 
+
+```
+[ashu@ip-172-31-27-51 ~]$ kubectl delete pods  akashpod1 dhruvpod1  divyapod1  gaurikapod1  hemupod1  kanakapod1  saipod1 
+pod "akashpod1" deleted
+pod "dhruvpod1" deleted
+pod "divyapod1" deleted
+pod "gaurikapod1" deleted
+pod "hemupod1" deleted
+pod "kanakapod1" deleted
+pod "saipod1" deleted
+[ashu@ip-172-31-27-51 ~]$ 
+
+```
+
+### 
+
+```
+ashu@ip-172-31-27-51 ~]$ kubectl get po ashupod1 -o wide
+NAME       READY   STATUS    RESTARTS   AGE   IP               NODE    NOMINATED NODE   READINESS GATES
+ashupod1   1/1     Running   0          38m   192.168.104.24   node2   <none>           <none>
+[ashu@ip-172-31-27-51 ~]$ 
+
+
+```
+
+### describe pod 
+
+```
+[ashu@ip-172-31-27-51 ~]$ kubectl describe pod ashupod1 
+Name:         ashupod1
+Namespace:    default
+Priority:     0
+Node:         node2/172.31.27.109
+Start Time:   Sat, 13 Aug 2022 06:29:08 +0000
+Labels:       <none>
+Annotations:  cni.projectcalico.org/containerID: fff4eb0e02a70dff317484958fcbf4042a107d31e00ef116658090dcd810181d
+              cni.projectcalico.org/podIP: 192.168.104.24/32
+              cni.projectcalico.org/podIPs: 192.168.104.24/32
+Status:       Running
+IP:           192.168.104.24
+IPs:
+
+```
+
+### access pod container 
+
+```
+[ashu@ip-172-31-27-51 ~]$ kubectl exec  -it  ashupod1  -- bash 
+root@ashupod1:/usr/src/app# 
+root@ashupod1:/usr/src/app# 
+root@ashupod1:/usr/src/app# 
+root@ashupod1:/usr/src/app# ls
+node_modules  package-lock.json  package.json  server.js
+root@ashupod1:/usr/src/app# exit
+exit
+[ashu@ip-1
+```
+
+### lets delete pod 
+
+```
+[ashu@ip-172-31-27-51 ~]$ kubectl delete pod ashupod1 
+pod "ashupod1" deleted
+
+
+```
+
+
