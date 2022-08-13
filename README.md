@@ -98,5 +98,22 @@ cb9ad7c100c4: Download complete
 ed0a182e3827: Download compl
 ```
 
+### creating container for app testing 
+
+```
+docker  run -d --name ashutc1 -p 1234:8080 docker.io/dockerashu/mobiashunode:v1
+64d18244c15d2d68e76cef146f8d411d36430920a2ce2f7d41f63637e7592aab
+[ashu@ip-172-31-27-51 nodeapp]$ docker  ps
+CONTAINER ID   IMAGE                        COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+64d18244c15d   dockerashu/mobiashunode:v1   "docker-entrypoint.s…"   6 seconds ago   Up 5 seconds   0.0.0.0:1234->8080/tcp, :::1234->8080/tcp   ashutc1
+```
+
+### Deploy container image in k8s --- 
+
+## k8s usages Pod Concept 
+
+<img src="pod.png">
+
+
 
 
