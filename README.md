@@ -14,5 +14,21 @@ node2    Ready    <none>          8d    v1.24.3
 
 <img src="oci.png">
 
+### k8s master and minion communication 
+
+<img src="min.png">
+
+### apiserver 
+
+<img src="api.png">
+
+### schedular 
+
+<img src="sch.png">
+
+### etcd 
+
+<img src="etcd.png">
+
 
 
