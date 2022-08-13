@@ -246,4 +246,83 @@ PING fb.com (157.240.241.35): 56 data bytes
  kubectl cp logs.txt ashutoshhpod1:/opt/
 ```
 
+### kubectl auto generate yaml 
+
+```
+[ashu@ip-172-31-27-51 ~]$  kubectl run ashuwebapp1 --image=dockerashu/ashucustomer:v1  --port 80 --dry-run=client  -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashuwebapp1
+  name: ashuwebapp1
+spec:
+  containers:
+  - image: dockerashu/ashucustomer:v1
+    name: ashuwebapp1
+    ports:
+    - containerPort: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+```
+
+### saving into a file 
+
+```
+ kubectl run ashuwebapp1 --image=dockerashu/ashucustomer:v1  --port 80 --dry-run=client  -o yaml  >autopod.yaml
+```
+
+### deploy it 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ ls
+ashupod1.yaml  autopod.yaml  logs.txt  task1.yaml
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl create -f autopod.yaml 
+pod/ashuwebapp1 created
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl get pods
+NAME          READY   STATUS             RESTARTS   AGE
+ashuwebapp1   1/1     Running            0          12s
+nehawebapp1   0/1     ImagePullBackOff   0          3m6s
+[ashu@ip-172-31-27-51 k8syamls]$ 
+
+
+```
+
+### final auto generate yAML 
+
+```
+[ashu@ip-172-31-27-51 ~]$ kubectl  run  ashupod111 --image=dockerashu/ashucustomer:v1 --port 80 --dry-run=client -o yaml 
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashupod111
+  name: ashupod111
+spec:
+  containers:
+  - image: dockerashu/ashucustomer:v1
+    name: ashupod111
+    ports:
+    - containerPort: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+[ashu@ip-172-31-27-51 ~]$ kubectl  run  ashupod111 --image=dockerashu/ashucustomer:v1 --port 80 --dry-run=client -o yaml     >auotgenpod.yaml 
+[ashu@ip-172-31-27-51 ~]$ kubectl create  -f  auotgenpod.yaml 
+pod/ashupod111 created
+[ashu@ip-172-31-27-51 ~]$ kubectl get  pods
+NAME           READY   STATUS    RESTARTS   AGE
+ashupod111     1/1     Running   0          4s
+dimpwebapp1    1/1     Running   0          2m9s
+divyawebapp1   1/1     Running   0          2m4s
+[ashu@ip-172-31-27-51 ~]$ 
+
+```
+
 
