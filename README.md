@@ -115,5 +115,32 @@ CONTAINER ID   IMAGE                        COMMAND                  CREATED    
 <img src="pod.png">
 
 
+### POd Design 
 
+```
+apiVersion: 'v1' # apiserver version 
+kind: Pod # resource in k8s to deploy container images 
+metadata: # info of pod 
+  name: ashupod1 # name of pod 
+spec: # about your containerized app
+  containers:
+  - name: ashuc1
+    image: docker.io/dockerashu/mobiashunode:v1
+    ports:
+    - containerPort: 8080 # container app port 
+```
 
+### sending and checking request related to pod 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl create -f  ashupod1.yaml 
+pod/ashupod1 created
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  pods 
+NAME          READY   STATUS              RESTARTS   AGE
+ashupod1      0/1     ContainerCreating   0          6s
+lakshaypod1   0/1     ContainerCreating   0          1s
+nehapod1      0/1     ContainerCreating   0          2s
+sharathpod1   0/1     ContainerCreating   0          1s
+[ashu@ip-172-31-27-51 k8syamls]$ 
+
+```
