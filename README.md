@@ -212,5 +212,38 @@ pod "ashupod1" deleted
 
 
 ```
+### a pod container with some process 
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ashutoshhpod1
+spec:
+  containers:
+  - name: ashucc11
+    image: busybox 
+    command: ['sh','-c','ping fb.com']
+    
+```
+
+### check output of pod container 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get po ashutoshhpod1 
+NAME            READY   STATUS    RESTARTS   AGE
+ashutoshhpod1   1/1     Running   0          5s
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  logs  ashutoshhpod1 
+PING fb.com (157.240.241.35): 56 data bytes
+64 bytes from 157.240.241.35: seq=0 ttl=38 time=81.648 ms
+64 bytes from 157.240.241.35: seq=1 ttl=38 time=81.647 ms
+64 bytes from 157.240.241.35: seq=2 ttl=38 time=81.687 m
+```
+
+### copy 
+
+```
+ kubectl cp logs.txt ashutoshhpod1:/opt/
+```
 
 
