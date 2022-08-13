@@ -325,4 +325,10 @@ divyawebapp1   1/1     Running   0          2m4s
 
 ```
 
+### how to get dashbaord password 
+
+```
+kubectl -n kubernetes-dashboard   describe secrets dash-secret
+```
+
 
