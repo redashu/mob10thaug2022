@@ -162,6 +162,93 @@ CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPAC
 
 ```
 
+## creating service in k8s 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  po -o wide
+NAME         READY   STATUS    RESTARTS   AGE   IP               NODE    NOMINATED NODE   READINESS GATES
+ashuwebpod   1/1     Running   0          60m   192.168.104.62   node2   <none>           <none>
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  create  service  
+Create a service using a specified subcommand.
+
+Aliases:
+service, svc
+
+Available Commands:
+  clusterip      Create a ClusterIP service
+  externalname   Create an ExternalName service
+  loadbalancer   Create a LoadBalancer service
+  nodeport       Create a NodePort service
+
+Usage:
+  kubectl create service [flags] [options]
+
+Use "kubectl <command> --help" for more information about a given command.
+Use "kubectl options" for a list of global command-line options (applies to all commands).
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  create  service   nodeport 
+```
+
+### creating nodeport service 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  create  service   nodeport  ashulb1  --tcp 1234:80   --dry-run=client  -o yaml  >nodeport.yaml     
+[ashu@ip-172-31-27-51 k8syamls]$ 
+
+
+
+```
+
+### creating service 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ ls
+ashupod1.yaml  autopod.yaml  nodeport.yaml  webpod.yaml
+ashutest.yaml  logs.txt      task1.yaml
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  create  -f  nodeport.yaml 
+service/ashulb1 created
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  service
+NAME      TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+ashulb1   NodePort   10.103.155.175   <none>        1234:30718/TCP   5s
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  svc
+NAME      TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+ashulb1   NodePort   10.103.155.175   <none>        1234:30718/TCP   10s
+[ashu@ip-172-31-27-51 k8syamls]$ 
+
+```
+
+### updating label 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  po --show-labels 
+NAME         READY   STATUS    RESTARTS   AGE   LABELS
+ashuwebpod   1/1     Running   0          90m   run=ashuwebpod
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl replace -f webpod.yaml --force 
+pod "ashuwebpod" deleted
+pod/ashuwebpod replaced
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  po --show-labels 
+NAME         READY   STATUS    RESTARTS   AGE   LABELS
+ashuwebpod   1/1     Running   0          4s    x=ashuapps
+[ashu@ip-172-31-27-51 k8syamls]$ 
+
+
+```
+
+### 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl get po --show-labels 
+NAME         READY   STATUS    RESTARTS   AGE     LABELS
+ashuwebpod   1/1     Running   0          3m28s   x=ashuapps
+[ashu@ip-172-31-27-51 k8syamls]$ 
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get svc -o wide
+NAME      TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE   SELECTOR
+ashulb1   NodePort   10.102.22.126   <none>        1234:30868/TCP   31s   x=ashuapps
+[ashu@ip-172-31-27-51 k8syamls]$ 
+
+
+```
+
+
 
 
 
