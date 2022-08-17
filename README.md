@@ -479,5 +479,89 @@ ashulb2   LoadBalancer   10.103.182.117   <pending>     80:32623/TCP   2s
 
 ```
 
+### deploy Nginx ingress controller
+
+```
+ashu@ip-172-31-27-51 k8syamls]$ kubectl apply -f  https://raw.githubusercontent.com/redashu/k8s/ssl/nginx-ingress-controller.yaml  
+namespace/ingress-nginx created
+serviceaccount/ingress-nginx created
+configmap/ingress-nginx-controller created
+clusterrole.rbac.authorization.k8s.io/ingress-nginx created
+clusterrolebinding.rbac.authorization.k8s.io/ingress-nginx created
+role.rbac.authorization.k8s.io/ingress-nginx created
+rolebinding.rbac.authorization.k8s.io/ingress-nginx created
+service/ingress-nginx-controller-admission created
+service/ingress-nginx-controller created
+deployment.apps/ingress-nginx-controller created
+ingressclass.networking.k8s.io/nginx created
+validatingwebhookconfiguration.admissionregistration.k8s.io/ingress-nginx-admission created
+serviceaccount/ingress-nginx-admission created
+clusterrole.rbac.authorization.k8s.io/ingress-nginx-admission created
+clusterrolebinding.rbac.authorization.k8s.io/ingress-nginx-admission created
+role.rbac.authorization.k8s.io/ingress-nginx-admission created
+rolebinding.rbac.authorization.k8s.io/ingress-nginx-admission created
+job.batch/ingress-nginx-admission-create created
+job.batch/ingress-nginx-admission-patch created
+```
+
+### now demo with ingress --
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl create -f deployment.yaml 
+deployment.apps/ashudeploy1 created
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  deploy 
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+ashudeploy1   1/1     1            1           7s
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  po --show-labels 
+NAME                           READY   STATUS    RESTARTS   AGE   LABELS
+ashudeploy1-7fd896568d-rglz6   1/1     Running   0          14s   app=ashudeploy1,pod-template-hash=7fd896568d
+[ashu@ip-172-31-27-51 k8syamls]$ 
+
+```
+
+### creating clusterIP service 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  deploy 
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+ashudeploy1   1/1     1            1           3m46s
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  expose deployment ashudeploy1 --type ClusterIP --port 1234 --target-port 80 --name  ashulb001 
+service/ashulb001 exposed
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  svc
+NAME        TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+ashulb001   ClusterIP   10.98.150.69   <none>        1234/TCP   5s
+[ashu@ip-172-31-27-51 k8syamls]$ 
+
+
+```
+
+### checking endpoints 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  svc
+NAME        TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+ashulb001   ClusterIP   10.98.150.69   <none>        1234/TCP   69s
+[ashu@ip-172-31-27-51 k8syamls]$ 
+[ashu@ip-172-31-27-51 k8syamls]$ 
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl get ep 
+NAME        ENDPOINTS            AGE
+ashulb001   192.168.166.159:80   3m8s
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get po -o wide 
+NAME                           READY   STATUS    RESTARTS   AGE     IP                NODE    NOMINATED NODE   READINESS GATES
+ashudeploy1-7fd896568d-rglz6   1/1     Running   0          7m31s   192.168.166.159   node1   <none>           <none>
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl scale deployment ashudeploy1 --replicas 5 
+deployment.apps/ashudeploy1 scaled
+[ashu@ip-172-31-27-51 k8syamls]$ 
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl get ep 
+NAME        ENDPOINTS                                                          AGE
+ashulb001   192.168.104.51:80,192.168.135.3:80,192.168.135.45:80 + 2 more...   4m9s
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl scale deployment ashudeploy1 --replicas 2
+deployment.apps/ashudeploy1 scaled
+[ashu@ip-172-31-27-51 k8syamls]$ 
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl get ep 
+NAME        ENDPOINTS                              AGE
+ashulb001   192.168.104.51:80,192.168.166.159:80   4m22s
+```
+
 
 
