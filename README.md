@@ -368,6 +368,15 @@ service "ashulb3" deleted
 
 ```
 
+### using commands to generate yaml 
+
+```
+ 684  kubectl create namespace  ashuk8s1  --dry-run=client  -o yaml 
+  685  kubectl run ashupod1  --image=ubuntu  --command sleep 10000  --namespace ashuk8s1  --dry-run=client -o yaml 
+  686  kubectl create service nodeport  ashusvc1  --tcp 1234:80 --namespace ashuk8s --dry-run=client -o yaml 
+  687  history 
+
+```
 ### single yAML solution 
 
 
