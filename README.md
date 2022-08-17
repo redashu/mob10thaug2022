@@ -222,3 +222,150 @@ NAME      TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
 ashulb1   NodePort   10.110.44.30   <none>        1234:30646/TCP   17s
 [ashu@ip-172-31-27-51 k8syamls]$ 
 ```
+
+### COntroller in k8s 
+
+<img src="ct.png">
+
+### Deployment 
+
+<img src="dep.png">
+
+### creating deployment 
+
+```
+kubectl create  deployment  ashudeploy1  --image=dockerashu/ashuapp:mobiv1  --port 80 --dry-run=client  -o yaml  >deployment.yaml 
+```
+
+### YAML 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashudeploy1
+  name: ashudeploy1 # name of deployment  
+spec:
+  replicas: 1 # number of pods we want 
+  selector:
+    matchLabels:
+      app: ashudeploy1
+  strategy: {} # upgrade / deployment strategy 
+  template: # to create pods 
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashudeploy1
+    spec:
+      containers:
+      - image: dockerashu/ashuapp:mobiv1
+        name: ashuapp
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}
+
+```
+
+### deploy yaml 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  create -f deployment.yaml 
+deployment.apps/ashudeploy1 created
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  deployment 
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+ashudeploy1   1/1     1            1           7s
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  rs
+NAME                     DESIRED   CURRENT   READY   AGE
+ashudeploy1-7fd896568d   1         1         1       18s
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  po
+NAME                           READY   STATUS    RESTARTS   AGE
+ashudeploy1-7fd896568d-gmnxc   1/1     Running   0          27s
+[ashu@ip-172-31-27-51 k8syamls]$ 
+
+```
+
+### checking self healing 
+
+```
+[ashu@ip-172-31-27-51 ~]$ kubectl  get  po  -o wide 
+NAME                           READY   STATUS    RESTARTS   AGE    IP               NODE    NOMINATED NODE   READINESS GATES
+ashudeploy1-7fd896568d-gmnxc   1/1     Running   0          105s   192.168.135.31   node3   <none>           <none>
+[ashu@ip-172-31-27-51 ~]$ kubectl  delete pod  ashudeploy1-7fd896568d-gmnxc
+pod "ashudeploy1-7fd896568d-gmnxc" deleted
+[ashu@ip-172-31-27-51 ~]$ kubectl  get  po  -o wide 
+NAME                           READY   STATUS    RESTARTS   AGE   IP                NODE    NOMINATED NODE   READINESS GATES
+ashudeploy1-7fd896568d-tq28h   1/1     Running   0          4s    192.168.166.166   node1   <none>           <none>
+[ashu@ip-172-31-27-51 ~]$ 
+
+```
+
+### scaling 
+
+```
+[ashu@ip-172-31-27-51 ~]$ kubectl  get  po  -o wide 
+NAME                           READY   STATUS    RESTARTS   AGE   IP                NODE    NOMINATED NODE   READINESS GATES
+ashudeploy1-7fd896568d-tq28h   1/1     Running   0          68s   192.168.166.166   node1   <none>           <none>
+[ashu@ip-172-31-27-51 ~]$ kubectl  get  deploy 
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+ashudeploy1   1/1     1            1           4m43s
+[ashu@ip-172-31-27-51 ~]$ 
+[ashu@ip-172-31-27-51 ~]$ kubectl scale  deployment   ashudeploy1  --replicas 3
+deployment.apps/ashudeploy1 scaled
+[ashu@ip-172-31-27-51 ~]$ kubectl  get  deploy 
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+ashudeploy1   3/3     3            3           5m59s
+[ashu@ip-172-31-27-51 ~]$ kubectl  get po -o wide 
+NAME                           READY   STATUS    RESTARTS   AGE     IP                NODE    NOMINATED NODE   READINESS GATES
+ashudeploy1-7fd896568d-l64bg   1/1     Running   0          24s     192.168.135.52    node3   <none>           <none>
+ashudeploy1-7fd896568d-tq28h   1/1     Running   0          3m26s   192.168.166.166   node1   <none>           <none>
+ashudeploy1-7fd896568d-v4smp   1/1     Running   0          24s     192.168.104.60    node2   <none>           <none>
+[ashu@ip-172-31-27-51 ~]$ 
+
+```
+
+### creating service of nodeport type 
+
+```
+[ashu@ip-172-31-27-51 ~]$ kubectl  get po --show-labels 
+NAME                           READY   STATUS    RESTARTS   AGE     LABELS
+ashudeploy1-7fd896568d-l64bg   1/1     Running   0          2m28s   app=ashudeploy1,pod-template-hash=7fd896568d
+ashudeploy1-7fd896568d-tq28h   1/1     Running   0          5m30s   app=ashudeploy1,pod-template-hash=7fd896568d
+ashudeploy1-7fd896568d-v4smp   1/1     Running   0          2m28s   app=ashudeploy1,pod-template-hash=7fd896568d
+[ashu@ip-172-31-27-51 ~]$ 
+[ashu@ip-172-31-27-51 ~]$ 
+[ashu@ip-172-31-27-51 ~]$ kubectl  get  deploy 
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+ashudeploy1   3/3     3            3           8m59s
+[ashu@ip-172-31-27-51 ~]$ kubectl expose  deployment  ashudeploy1  --type NodePort  --port 1234 --target-port 80 --name ashulb3 
+service/ashulb3 exposed
+[ashu@ip-172-31-27-51 ~]$ kubectl  get  svc
+NAME      TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+ashulb3   NodePort   10.97.164.167   <none>        1234:31548/TCP   8s
+[ashu@ip-172-31-27-51 ~]$ 
+
+
+```
+
+### Delete all resources 
+
+```
+[ashu@ip-172-31-27-51 ~]$ kubectl  get  deploy 
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+ashudeploy1   3/3     3            3           8m59s
+[ashu@ip-172-31-27-51 ~]$ kubectl expose  deployment  ashudeploy1  --type NodePort  --port 1234 --target-port 80 --name ashulb3 
+service/ashulb3 exposed
+[ashu@ip-172-31-27-51 ~]$ kubectl  get  svc
+NAME      TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+ashulb3   NodePort   10.97.164.167   <none>        1234:31548/TCP   8s
+[ashu@ip-172-31-27-51 ~]$ kubectl delete deploy,svc  --all
+deployment.apps "ashudeploy1" deleted
+service "ashulb3" deleted
+[ashu@ip-172-31-27-51 ~]$ 
+
+
+```
+
+
