@@ -135,8 +135,90 @@ ashulb1   NodePort   10.98.74.143   <none>        1234:30621/TCP   13s   run=ash
 
 ```
 
-### verify 
+### service delete 
+
+```
+[ashu@ip-172-31-27-51 ~]$ kubectl get  svc
+NAME      TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+ashulb1   NodePort   10.98.74.143   <none>        1234:30621/TCP   14m
+[ashu@ip-172-31-27-51 ~]$ kubectl delete svc  ashulb1 
+service "ashulb1" deleted
+[ashu@ip-172-31-27-51 ~]$ 
+
 
 ```
 
+### creating service to automatically match pod label 
+
+```
+[ashu@ip-172-31-27-51 ~]$ kubectl  get  po 
+NAME         READY   STATUS    RESTARTS   AGE
+ashuwebapp   1/1     Running   0          38m
+[ashu@ip-172-31-27-51 ~]$ 
+[ashu@ip-172-31-27-51 ~]$ kubectl expose  pod  ashuwebapp  --type NodePort --port  1234 --target-port 80 --name ashulb2 
+service/ashulb2 exposed
+[ashu@ip-172-31-27-51 ~]$ kubectl get svc -owide
+NAME      TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE   SELECTOR
+ashulb2   NodePort   10.100.54.141   <none>        1234:31586/TCP   20s   run=ashuwebapp
+[ashu@ip-172-31-27-51 ~]$ 
+
+
+```
+
+### combine yAML 
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels: # label of my pod 
+    run: ashuwebapp # label of pod 
+  name: ashuwebapp # name of pod 
+spec:
+  containers:
+  - image: dockerashu/ashuapp:mobiv1
+    name: ashuwebapp
+    ports:
+    - containerPort: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+# lets write service yaml here 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashulb1
+  name: ashulb1
+spec:
+  ports:
+  - name: 1234-80
+    port: 1234
+    protocol: TCP
+    targetPort: 80
+  selector: # pod finder 
+    run: ashuwebapp
+  type: NodePort
+status:
+  loadBalancer: {}
+
+```
+
+### lets deploy it 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl create -f  combine.yaml  
+pod/ashuwebapp created
+service/ashulb1 created
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl get po
+NAME         READY   STATUS    RESTARTS   AGE
+ashuwebapp   1/1     Running   0          12s
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl get svc
+NAME      TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+ashulb1   NodePort   10.110.44.30   <none>        1234:30646/TCP   17s
+[ashu@ip-172-31-27-51 k8syamls]$ 
 ```
