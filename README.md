@@ -455,3 +455,29 @@ ashutest.yaml  combine.yaml  logs.txt         newnodeport.yaml  nodeport.yaml   
 
 ```
 
+### End to end deployment. 
+
+<img src="dep2.png">
+
+### creating lb service 
+
+```
+[ashu@ip-172-31-27-51 ~]$ kubectl get deploy 
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+ashudeploy1   3/3     3            3           34m
+[ashu@ip-172-31-27-51 ~]$ kubectl get  svc
+NAME      TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+ashulb1   NodePort   10.100.44.106   <none>        80:30727/TCP   33m
+[ashu@ip-172-31-27-51 ~]$ kubectl expose deployment ashudeploy1 --type LoadBalancer  --port 80 --name ashulb2
+service/ashulb2 exposed
+[ashu@ip-172-31-27-51 ~]$ kubectl get  svc
+NAME      TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+ashulb1   NodePort       10.100.44.106    <none>        80:30727/TCP   33m
+ashulb2   LoadBalancer   10.103.182.117   <pending>     80:32623/TCP   2s
+[ashu@ip-172-31-27-51 ~]$ 
+
+
+```
+
+
+
