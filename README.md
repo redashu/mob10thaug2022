@@ -270,7 +270,42 @@ ashulb2   NodePort   10.108.35.2   <none>        80:31152/TCP   7s
 
 ```
 
+## rolling updates in k8s using deployment 
+
+### create deployment for your web app 
+
+```
+kubectl create deployment ashu-update-app --image=docker.io/dockerashu/ashuapp:mobiv1  --port 80  --dry-run=client -o yaml  >rollingupdate.yaml 
+[ashu@ip-172-31-27-51 k8syamls]$ 
+```
+
+### creating 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl apply -f rollingupdate.yaml 
+deployment.apps/ashu-update-app created
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl get  deploy 
+NAME              READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-update-app   1/1     1            1           10s
+[ashu@ip-172-31-27-51 k8syamls]$ 
+
+```
+
+### creating service 
+
+```
+[ashu@ip-172-31-27-51 ~]$ kubectl get  deploy
+NAME              READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-update-app   1/1     1            1           65s
+[ashu@ip-172-31-27-51 ~]$ kubectl  expose deployment ashu-update-app --type NodePort --port 80 --name ashusvc1
+service/ashusvc1 exposed
+[ashu@ip-172-31-27-51 ~]$ kubectl get  svc
+NAME       TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+ashusvc1   NodePort   10.101.113.125   <none>        80:30715/TCP   28s
+[ashu@ip-172-31-27-51 ~]$ 
 
 
+
+```
 
 
