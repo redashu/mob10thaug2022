@@ -137,7 +137,80 @@ ashuocrdeploy-5f8bf77bd9-vjltn   1/1     Running   0          31s
 [ashu@ip-172-31-27-51 k8syamls]$ 
 ```
 
+==
+## case 1 -- No ingress.  
 
+### creating nodeport service ---
+
+```
+ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  deploy 
+NAME            READY   UP-TO-DATE   AVAILABLE   AGE
+ashuocrdeploy   1/1     1            1           56m
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  po 
+NAME                             READY   STATUS    RESTARTS   AGE
+ashuocrdeploy-5f8bf77bd9-vjltn   1/1     Running   0          56m
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  secret
+NAME           TYPE                             DATA   AGE
+ashu-regcred   kubernetes.io/dockerconfigjson   1      65m
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl   expose deploy  ashuocrdeploy --type NodePort  --port  80 --name ashulb1 --dry-run=client  -o yaml  >ocrsvc.yaml
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl apply -f ocrsvc.yaml 
+service/ashulb1 created
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  svc
+NAME      TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+ashulb1   NodePort   10.100.165.208   <none>        80:32544/TCP   7s
+[ashu@ip-172-31-27-51 k8syamls]$ 
+
+```
+
+
+## case 2 -- using Ingress 
+
+### creating cluster IP service 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl   expose deploy  ashuocrdeploy --type ClusterIP  --port  80 --name ashulb1 --dry-run=client  -o yaml  >ocrsvc.yaml
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl apply -f ocrsvc.yaml 
+service/ashulb1 created
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  svc
+NAME      TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+ashulb1   ClusterIP   10.108.63.223   <none>        80/TCP    5s
+[ashu@ip-172-31-27-51 k8syamls]$ 
+
+```
+
+### Ingress rule 
+
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ashutoshh-app-rule # name of my rule 
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx  # name of class- provider name 
+  rules:
+  - host: me.ashutoshh.in
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ashulb1 # name of service  
+            port:
+              number: 80 # port of service 
+```
+
+### deploy 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl apply -f ingressrule.yaml 
+ingress.networking.k8s.io/ashutoshh-app-rule created
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  ing 
+NAME                 CLASS   HOSTS             ADDRESS   PORTS   AGE
+ashutoshh-app-rule   nginx   me.ashutoshh.in             80      18s
+```
 
 
 
