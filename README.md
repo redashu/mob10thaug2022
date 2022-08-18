@@ -212,5 +212,65 @@ NAME                 CLASS   HOSTS             ADDRESS   PORTS   AGE
 ashutoshh-app-rule   nginx   me.ashutoshh.in             80      18s
 ```
 
+### context commands 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl config get-contexts 
+CURRENT   NAME                                                      CLUSTER                                                   AUTHINFO                                                  NAMESPACE
+          arn:aws:eks:us-east-1:751136288263:cluster/mobi-cluster   arn:aws:eks:us-east-1:751136288263:cluster/mobi-cluster   arn:aws:eks:us-east-1:751136288263:cluster/mobi-cluster   
+*         kubernetes-admin@kubernetes                               kubernetes                                                kubernetes-admin                                          ashu-project
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  config use-context  kubernetes-admin@kubernetes
+Switched to context "kubernetes-admin@kubernetes".
+[ashu@ip-172-31-27-51 k8syamls]$ 
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl config set-context --current --namespace ashu-project 
+Context "kubernetes-admin@kubernetes" modified.
+[ashu@ip-172-31-27-51 k8syamls]$ 
+
+```
+
+## Deployment strategy 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl scale deploy  ashuocrdeploy  --replicas=3
+deployment.apps/ashuocrdeploy scaled
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl get deploy 
+NAME            READY   UP-TO-DATE   AVAILABLE   AGE
+ashuocrdeploy   3/3     3            3           4h10m
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl get po 
+NAME                             READY   STATUS    RESTARTS   AGE
+ashuocrdeploy-5d955cc5dc-4m5nw   1/1     Running   0          60m
+ashuocrdeploy-5d955cc5dc-f9xj2   1/1     Running   0          12s
+ashuocrdeploy-5d955cc5dc-p9gz5   1/1     Running   0          12s
+[ashu@ip-172-31-27-51 k8syamls]$ 
+
+```
+
+### nodeport service creation
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl get  svc
+No resources found in ashu-project namespace.
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  deploy 
+NAME            READY   UP-TO-DATE   AVAILABLE   AGE
+ashuocrdeploy   3/3     3            3           4h12m
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl expose deployment ashuocrdeploy --type NodePort --port 80 --name ashulb2
+service/ashulb2 exposed
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  svc
+NAME      TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+ashulb2   NodePort   10.108.35.2   <none>        80:31152/TCP   7s
+[ashu@ip-172-31-27-51 k8syamls]$ 
+```
+
+### deploy rollout 
+
+```
+861  kubectl rollout restart deployment d1 
+  862  kubectl rollout status  deployment d1 
+  863  kubectl create ns  tasks
+
+```
+
+
+
 
 
