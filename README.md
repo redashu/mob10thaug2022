@@ -55,6 +55,35 @@ NAME                             READY   STATUS         RESTARTS   AGE
 ashuocrdeploy-67ff554c69-sqkbg   0/1     ErrImagePull   0          9s
 [ashu@ip-172-31-27-51 k8syamls]$ 
 ```
+### creating secret 
+
+```
+[ashu@ip-172-31-27-51 ~]$ kubectl create secret 
+Create a secret using specified subcommand.
+
+Available Commands:
+  docker-registry   Create a secret for use with a Docker registry
+  generic           Create a secret from a local file, directory, or literal value
+  tls               Create a TLS secret
+
+Usage:
+  kubectl create secret [flags] [options]
+
+
+```
+
+### creating 
+
+```
+ 818  kubectl create secret   docker-registry  ashu-regcred  --docker-server="phx.ocir.io"  --docker-username="axyme@gmail.com"  --docker-password="8Y[vO7;6L(0S.{"  --dry-run=client -o yaml >secret.yaml
+  819  history 
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl apply -f  secret.yaml 
+secret/ashu-regcred created
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  secret  
+NAME           TYPE                             DATA   AGE
+ashu-regcred   kubernetes.io/dockerconfigjson   1      5s
+
+```
 
 
 
