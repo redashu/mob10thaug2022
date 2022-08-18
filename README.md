@@ -85,6 +85,59 @@ ashu-regcred   kubernetes.io/dockerconfigjson   1      5s
 
 ```
 
+### YAML File 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuocrdeploy
+  name: ashuocrdeploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashuocrdeploy
+  strategy: {}
+  template: # will be used to create pods 
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashuocrdeploy
+    spec:
+      imagePullSecrets: # to call secret from same namespace 
+      - name: ashu-regcred # check using kubectl get secret 
+      containers:
+      - image: phx.ocir.io/axmbtg8judkl/ashuweb:mobiv1
+        name: ashuweb
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}
+
+```
+
+### deploy it 
+
+```
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl replace -f  ocrdeploy.yaml  --force 
+deployment.apps "ashuocrdeploy" deleted
+deployment.apps/ashuocrdeploy replaced
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get  secret 
+NAME           TYPE                             DATA   AGE
+ashu-regcred   kubernetes.io/dockerconfigjson   1      8m59s
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get deploy 
+NAME            READY   UP-TO-DATE   AVAILABLE   AGE
+ashuocrdeploy   1/1     1            1           24s
+[ashu@ip-172-31-27-51 k8syamls]$ kubectl  get po 
+NAME                             READY   STATUS    RESTARTS   AGE
+ashuocrdeploy-5f8bf77bd9-vjltn   1/1     Running   0          31s
+[ashu@ip-172-31-27-51 k8syamls]$ 
+```
+
+
 
 
 
