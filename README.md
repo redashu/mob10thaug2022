@@ -88,6 +88,82 @@ kubectl create  deployment ashudb  --image=mysql:5.6 --port 3306  --dry-run=clie
 [ashu@ip-172-31-27-51 storge-deploy]$ 
 ```
 
+### creating secret to store dbroot cred 
+
+```
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl  create  secret generic  ashudbsec  --from-literal     mydbpass="Mobidb098#" --dry-run=client -o yaml >dbsecret.yaml 
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl  apply -f  dbsecret.yaml 
+secret/ashudbsec created
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl  get  secret 
+NAME        TYPE     DATA   AGE
+ashudbsec   Opaque   1      4s
+[ashu@ip-172-31-27-51 storge-deploy]$ 
+
+
+```
+
+### final deployment yaml 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashudb
+  name: ashudb # name of deployment 
+spec:
+  replicas: 1 # one pod of db 
+  selector:
+    matchLabels:
+      app: ashudb
+  strategy: {}
+  template: # template will be used to create pod 
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashudb
+    spec:
+      volumes: # to create volume for this pod 
+      - name: ashuvol001 
+        persistentVolumeClaim: # calling pvc 
+          claimName: ashupvc-db # name of pvc 
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        ports:
+        - containerPort: 3306
+        resources: {}
+        env: # calling env of docker image 
+        - name: MYSQL_ROOT_PASSWORD 
+          valueFrom: # calling something 
+            secretKeyRef: 
+              name: ashudbsec # name of secret 
+              key: mydbpass # key of secret 
+        volumeMounts: # attaching volume to container 
+        - name: ashuvol001
+          mountPath: /var/lib/mysql/ # location inside container 
+status: {}
+
+```
+
+###
+
+```
+[ashu@ip-172-31-27-51 storge-deploy]$ ls
+ashupvc.yaml  ashupv.yaml  dbsecret.yaml  mysqldb-deploy.yaml
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl apply -f mysqldb-deploy.yaml 
+deployment.apps/ashudb created
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl  get  deploy 
+NAME     READY   UP-TO-DATE   AVAILABLE   AGE
+ashudb   1/1     1            1           10s
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl  get  po
+NAME                      READY   STATUS    RESTARTS   AGE
+ashudb-5978645458-pw6x8   1/1     Running   0          14s
+[ashu@ip-172-31-27-51 storge-deploy]$ 
+
+```
+
 
 
 
