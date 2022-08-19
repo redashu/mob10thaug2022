@@ -1,0 +1,10 @@
+apiVersion: 'v1' # apiserver version 
+kind: Pod # resource in k8s to deploy container images 
+metadata: # info of pod 
+  name: ashupod1 # name of pod 
+spec: # about your containerized app
+  containers:
+  - name: ashuc1
+    image: docker.io/dockerashu/mobiashunode:v1
+    ports:
+    - containerPort: 8080 # container app port 

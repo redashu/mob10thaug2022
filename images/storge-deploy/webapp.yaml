@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuwebapp
+  name: ashuwebapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashuwebapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashuwebapp
+    spec:
+      containers:
+      - image: wordpress:4.8-apache
+        name: wordpress
+        ports:
+        - containerPort: 80
+        resources: {}
+        env: 
+        - name: WORDPRESS_DB_PASSWORD 
+          valueFrom: # calling 
+            secretKeyRef: # secret 
+              name: ashudbsec # name of secret 
+              key: mydbpass # key of secret 
+        envFrom: # for calling env variable from configmap/secret 
+        - configMapRef:
+            name: dbconncet # name of configmap 
+
+status: {}

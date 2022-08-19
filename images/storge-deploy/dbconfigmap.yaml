@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  WORDPRESS_DB_HOST: ashdbsvc1 # service name of db deployment 
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: dbconncet

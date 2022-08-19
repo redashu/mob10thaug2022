@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels: # label of my pod 
+    run: ashuwebapp # label of pod 
+  name: ashuwebapp # name of pod 
+spec:
+  containers:
+  - image: dockerashu/ashuapp:mobiv1
+    name: ashuwebapp
+    ports:
+    - containerPort: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+# lets write service yaml here 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashulb1
+  name: ashulb1
+spec:
+  ports:
+  - name: 1234-80
+    port: 1234
+    protocol: TCP
+    targetPort: 80
+  selector: # pod finder 
+    run: ashuwebapp
+  type: NodePort
+status:
+  loadBalancer: {}

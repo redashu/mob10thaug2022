@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  ashuwebapp:
+    image: ashumobiweb:appv1
+    build: .
+    container_name: ashuwebc1
+    ports:
+      - 1234:80 
+    restart: always 

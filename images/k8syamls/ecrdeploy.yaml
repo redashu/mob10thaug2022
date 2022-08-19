@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuecrapp
+  name: ashuecrapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashuecrapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashuecrapp
+    spec:
+      containers:
+      - image: 724915917086.dkr.ecr.us-west-2.amazonaws.com/mobiwebapp:ashuappv1
+        name: mobiwebapp
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashudb
+  name: ashudb # name of deployment 
+spec:
+  replicas: 1 # one pod of db 
+  selector:
+    matchLabels:
+      app: ashudb
+  strategy: {}
+  template: # template will be used to create pod 
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashudb
+    spec:
+      volumes: # to create volume for this pod 
+      - name: ashuvol001 
+        persistentVolumeClaim: # calling pvc 
+          claimName: ashupvc-db # name of pvc 
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        ports:
+        - containerPort: 3306
+        resources: {}
+        env: # calling env of docker image 
+        - name: MYSQL_ROOT_PASSWORD 
+          valueFrom: # calling something 
+            secretKeyRef: 
+              name: ashudbsec # name of secret 
+              key: mydbpass # key of secret 
+        volumeMounts: # attaching volume to container 
+        - name: ashuvol001
+          mountPath: /var/lib/mysql/ # location inside container 
+status: {}

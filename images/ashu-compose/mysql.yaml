@@ -1,0 +1,26 @@
+version:  "3.8"
+networks: # creating network bridge 
+  ashubr1111: # name of network bridge 
+volumes: # creating volumes 
+  ashudbvol1: # name of volume 
+services:
+  ashuwebapp: 
+    image: adminer 
+    container_name: ashuwebc1 
+    restart: always 
+    networks:
+    - ashubr1111
+    ports:
+    - "1234:8080"
+    depends_on: # it will wait for given service to be in ready state  
+    - ashudb1 # service name of db 
+  ashudb1: 
+    image: mysql
+    container_name: ashudbc1 
+    restart: always 
+    environment: # setting env values 
+      MYSQL_ROOT_PASSWORD: "Mobi@098#"
+    volumes: # using volume 
+    - "ashudbvol1:/var/lib/mysql/"
+    networks: # using network 
+    - ashubr1111

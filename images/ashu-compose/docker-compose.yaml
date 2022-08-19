@@ -1,0 +1,13 @@
+version: '3.8'
+services: # components of your app/project
+  ashuapp2: 
+    image: ashuhttpd:v1  # name of image to build
+    build: . # path of dockerfile
+    container_name: ashuwebc1 
+    ports: # port forwarding 
+      - 1234:80 
+  ashuapp1: # name of app
+    image: alpine 
+    container_name: ashuc001 
+    command: ping google.com # to choose default process
+   

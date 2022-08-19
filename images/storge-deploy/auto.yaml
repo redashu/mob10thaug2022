@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashudep1
+  name: ashudep1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ashudep1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashudep1
+    spec:
+      containers:
+      - image: docker.io/dockerashu/ashuapp:mobiv1
+        name: ashuapp
+        ports:
+        - containerPort: 80
+        resources: {}
+        imagePullPolicy: Always 
+status: {}

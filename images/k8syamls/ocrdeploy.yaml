@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuocrdeploy
+  name: ashuocrdeploy
+  namespace: tasks 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashuocrdeploy
+  strategy: {}
+  template: # will be used to create pods 
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashuocrdeploy
+    spec:
+      imagePullSecrets: # to call secret from same namespace 
+      - name: ashu-regcred # check using kubectl get secret 
+      containers:
+      - image: phx.ocir.io/axmbtg8judkl/ashuweb:mobiv1
+        name: ashuweb
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}

@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ashutoshh-app-rule # name of my rule 
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx  # name of class- provider name 
+  rules:
+  - host: me.ashutoshh.in
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ashulb1 # name of service  
+            port:
+              number: 80 # port of service 

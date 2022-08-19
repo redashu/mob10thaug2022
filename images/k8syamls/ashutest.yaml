@@ -1,0 +1,16 @@
+apiVersion: v1 
+kind: Pod # resource type 
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashupod1
+  name: ashupod1 # name of pod 
+spec:
+  containers:
+  - image: alpine
+    name: ashupod1
+    command: ['sh','-c','sleep 10000'] # choosing partent process of container
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always 
+status: {}
