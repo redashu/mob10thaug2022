@@ -310,6 +310,57 @@ s1     NodePort   10.103.68.198   <none>        80:30998/TCP   19s
 
 ```
 
+### Multi container POd 
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashupodx1
+  name: ashupodx1
+spec:
+  volumes:  # creating volume 
+  - name: ashudatavol1  # name of volume
+    emptyDir: {}  # type of volume 
+  containers:
+  - image: alpine 
+    name: ashuc1 
+    volumeMounts: # mounting volume 
+    - name: ashudatavol1
+      mountPath: /mnt/data/
+    command: ['sh','-c','while true; do date >>/mnt/data/time.txt;sleep 10;done']
+  - image: nginx
+    name: ashuc2 # name of container 
+    ports:
+    - containerPort: 80
+    resources: {}
+    volumeMounts: # to attach volume to container 
+    - name: ashudatavol1
+      mountPath: /usr/share/nginx/html/
+      readOnly: true 
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+```
+
+#### 
+
+```
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl apply -f mcpod.yaml 
+pod/ashupodx1 created
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl  get  po 
+NAME                        READY   STATUS    RESTARTS   AGE
+ashudep1-747647f696-bs5p5   1/1     Running   0          61m
+ashudep1-747647f696-dnxkh   1/1     Running   0          61m
+ashudep1-747647f696-m54tg   1/1     Running   0          61m
+ashupodx1                   2/2     Running   0          23s
+[ashu@ip-172-31-27-51 storge-deploy]$ 
+
+```
+
 
 
 
