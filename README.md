@@ -181,6 +181,85 @@ ashdbsvc1   ClusterIP   10.103.103.244   <none>        3306/TCP   10s
 ```
 
 
+### creating webapp 
+
+```
+[ashu@ip-172-31-27-51 storge-deploy]$ ls
+ashupvc.yaml  ashupv.yaml  dbsecret.yaml  dbsvc.yaml  mysqldb-deploy.yaml
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl  create  deployment  ashuwebapp --image=wordpress:4.8-apache --port 80 --dry-run=client -o yaml >webapp.yaml 
+[ashu@ip-172-31-27-51 storge-deploy]$ 
+
+
+```
+
+### COnfigMap 
+
+```
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl create configmap dbconncet  --from-literal  WORDPRESS_DB_HOST="mydburl" --dry-run=client  -o yaml >dbconfigmap.yaml 
+```
+
+### yaml of deployment 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuwebapp
+  name: ashuwebapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashuwebapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashuwebapp
+    spec:
+      containers:
+      - image: wordpress:4.8-apache
+        name: wordpress
+        ports:
+        - containerPort: 80
+        resources: {}
+        env: 
+        - name: WORDPRESS_DB_PASSWORD 
+          valueFrom: # calling 
+            secretKeyRef: # secret 
+              name: ashudbsec # name of secret 
+              key: mydbpass # key of secret 
+        envFrom: # for calling env variable from configmap/secret 
+        - configMapRef:
+            name: dbconncet # name of configmap 
+
+status: {}
+
+```
+
+### creating service 
+
+```
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl apply -f webapp.yaml 
+deployment.apps/ashuwebapp created
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl  get  deploy
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+ashudb       1/1     1            1           82m
+ashuwebapp   1/1     1            1           86s
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl  expose deployment  ashuwebapp --type NodePort --port  80 --name ashuwebsvc1 --dry-run=client -o yaml >websvc.yaml 
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl apply -f websvc.yaml 
+service/ashuwebsvc1 created
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl  get  svc
+NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+ashdbsvc1     ClusterIP   10.103.103.244   <none>        3306/TCP       42m
+ashuwebsvc1   NodePort    10.110.185.189   <none>        80:32300/TCP   72s
+[ashu@ip-172-31-27-51 storge-deploy]$ 
+
+```
+
 
 
 
