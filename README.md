@@ -361,6 +361,54 @@ ashupodx1                   2/2     Running   0          23s
 
 ```
 
+### access 
+
+```
+[ashu@ip-172-31-27-51 ~]$ kubectl  get  po 
+NAME                        READY   STATUS    RESTARTS   AGE
+ashudep1-747647f696-bs5p5   1/1     Running   0          62m
+ashudep1-747647f696-dnxkh   1/1     Running   0          62m
+ashudep1-747647f696-m54tg   1/1     Running   0          62m
+ashupodx1                   2/2     Running   0          72s
+[ashu@ip-172-31-27-51 ~]$ kubectl  exec  -it  ashupodx1  -- sh 
+Defaulted container "ashuc1" out of: ashuc1, ashuc2
+/ # cd /mnt/data/
+/mnt/data # ls
+time.txt
+/mnt/data # cat  time.txt 
+Fri Aug 19 11:57:13 UTC 2022
+Fri Aug 19 11:57:23 UTC 2022
+Fri Aug 19 11:57:33 UTC 2022
+Fri Aug 19 11:57:43 UTC 2022
+Fri Aug 19 11:57:53 UTC 2022
+Fri Aug 19 11:58:03 UTC 2022
+Fri Aug 19 11:58:13 UTC 2022
+Fri Aug 19 11:58:23 UTC 2022
+Fri Aug 19 11:58:33 UTC 2022
+Fri Aug 19 11:58:43 UTC 2022
+Fri Aug 19 11:58:53 UTC 2022
+Fri Aug 19 11:59:03 UTC 2022
+Fri Aug 19 11:59:13 UTC 2022
+Fri Aug 19 11:59:23 UTC 2022
+Fri Aug 19 11:59:33 UTC 2022
+/mnt/data # exit
+[ashu@ip-172-31-27-51 ~]$ 
+```
+
+### accessing second container 
+
+```
+[ashu@ip-172-31-27-51 ~]$ kubectl  exec  -it  ashupodx1 -c  ashuc2   -- bash 
+root@ashupodx1:/# 
+root@ashupodx1:/# 
+root@ashupodx1:/# ls  /usr/share/nginx/html/
+time.txt
+root@ashupodx1:/# exit
+exit
+
+```
+
+
 
 
 
