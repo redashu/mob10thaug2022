@@ -286,6 +286,29 @@ Context "arn:aws:eks:us-east-1:751136288263:cluster/mobi-cluster" modified.
 
 ```
 
+## CI CD --
+
+```
+ 1033  kubectl create  deployment  ashudep1  --image=docker.io/dockerashu/ashuapp:mobiv1 --port 80  --replicas=3   --dry-run=client -o yaml  >auto.yaml 
+ 1034  history 
+[ashu@ip-172-31-27-51 ~]$ 
+[ashu@ip-172-31-27-51 ~]$ 
+[ashu@ip-172-31-27-51 ~]$ 
+[ashu@ip-172-31-27-51 ~]$ 
+[ashu@ip-172-31-27-51 ~]$ 
+[ashu@ip-172-31-27-51 ~]$ kubectl apply -f auto.yaml 
+deployment.apps/ashudep1 created
+[ashu@ip-172-31-27-51 ~]$ kubectl get  deploy 
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+ashudep1   3/3     3            3           9s
+[ashu@ip-172-31-27-51 ~]$ kubectl expose deployment  ashudep1 --type NodePort --port 80 --name s1
+service/s1 exposed
+[ashu@ip-172-31-27-51 ~]$ kubectl get  svc
+NAME   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+s1     NodePort   10.103.68.198   <none>        80:30998/TCP   19s
+[ashu@ip-172-31-27-51 ~]$ 
+
+```
 
 
 
