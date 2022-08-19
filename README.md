@@ -260,6 +260,33 @@ ashuwebsvc1   NodePort    10.110.185.189   <none>        80:32300/TCP   72s
 
 ```
 
+### context in k8s
+
+```
+[ashu@ip-172-31-27-51 images]$ kubectl config get-contexts 
+CURRENT   NAME                                                      CLUSTER                                                   AUTHINFO                                                  NAMESPACE
+          arn:aws:eks:us-east-1:751136288263:cluster/mobi-cluster   arn:aws:eks:us-east-1:751136288263:cluster/mobi-cluster   arn:aws:eks:us-east-1:751136288263:cluster/mobi-cluster   
+*         kubernetes-admin@kubernetes                               kubernetes                                                kubernetes-admin                                          ashu-project
+[ashu@ip-172-31-27-51 images]$ 
+[ashu@ip-172-31-27-51 images]$ kubectl config use-context arn:aws:eks:us-east-1:751136288263:cluster/mobi-cluster
+Switched to context "arn:aws:eks:us-east-1:751136288263:cluster/mobi-cluster".
+[ashu@ip-172-31-27-51 images]$ 
+
+
+```
+
+### creating namesapce 
+
+```
+[ashu@ip-172-31-27-51 ~]$ kubectl  create  ns  ashu-project 
+namespace/ashu-project created
+[ashu@ip-172-31-27-51 ~]$ kubectl config set-context --current --namespace ashu-project
+Context "arn:aws:eks:us-east-1:751136288263:cluster/mobi-cluster" modified.
+[ashu@ip-172-31-27-51 ~]$ 
+
+```
+
+
 
 
 
