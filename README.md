@@ -164,6 +164,22 @@ ashudb-5978645458-pw6x8   1/1     Running   0          14s
 
 ```
 
+### creating service of clusterIP type for db 
+
+```
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl  get  deploy 
+NAME     READY   UP-TO-DATE   AVAILABLE   AGE
+ashudb   1/1     1            1           41m
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl  expose  deployment  ashudb --type ClusterIP --port 3306  --name ashdbsvc1 --dry-run=client -o yaml >dbsvc.yaml 
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl apply -f  dbsvc.yaml 
+service/ashdbsvc1 created
+[ashu@ip-172-31-27-51 storge-deploy]$ kubectl  get  svc
+NAME        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+ashdbsvc1   ClusterIP   10.103.103.244   <none>        3306/TCP   10s
+[ashu@ip-172-31-27-51 storge-deploy]$ 
+
+```
+
 
 
 
